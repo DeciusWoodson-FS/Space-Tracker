@@ -28,7 +28,6 @@ const show = async (req, res) => {
 const create = async (req, res) => {
   try {
     const galaxy = await Galaxy.create(req.body);
-    // Returning JSON is standard for APIs, though your comment mentioned redirect.
     res.status(201).json(galaxy);
   } catch (error) {
     res.status(400).json({ error: error.message });
