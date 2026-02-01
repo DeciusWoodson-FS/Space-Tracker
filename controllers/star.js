@@ -2,69 +2,63 @@ const { Star } = require("../models");
 
 // GET all
 const index = async (req, res) => {
-  try {
-    const stars = await Star.findAll();
+  const stars = await Star.findAll();
+  if (req.accepts("html")) {
+    res.render("star/index.twig", { stars });
+  } else {
     res.status(200).json(stars);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
 };
 
-// GET by "id"
-const show = async (req, res) => {
-  try {
+// Show Form (HTML only)
+const form = async (req, res) => {
+  if (req.params.id) {
     const star = await Star.findByPk(req.params.id);
-    if (star) {
-      res.status(200).json(star);
-    } else {
-      res.status(404).json({ message: "Star not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.render("star/form.twig", { star, action: "Update" });
+  } else {
+    res.render("star/form.twig", { action: "Create" });
   }
 };
 
-// PUT
+// POST
 const create = async (req, res) => {
+  const data = req.body;
+  if (req.file) data.image = req.file.filename;
+
   try {
-    const star = await Star.create(req.body);
-    res.status(201).json(star);
+    const star = await Star.create(data);
+    if (req.accepts("html")) {
+      res.redirect("/stars");
+    } else {
+      res.status(201).json(star);
+    }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).send(error.message);
   }
 };
 
-// PATCH
+// PATCH/PUT
 const update = async (req, res) => {
-  try {
-    const [updated] = await Star.update(req.body, {
-      where: { id: req.params.id },
-    });
-    if (updated) {
-      const updatedStar = await Star.findByPk(req.params.id);
-      res.status(200).json(updatedStar);
-    } else {
-      res.status(404).json({ message: "Star not found" });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  const data = req.body;
+  if (req.file) data.image = req.file.filename;
+
+  await Star.update(data, { where: { id: req.params.id } });
+
+  if (req.accepts("html")) {
+    res.redirect("/stars");
+  } else {
+    res.status(200).json({ message: "Updated" });
   }
 };
 
 // DELETE
 const remove = async (req, res) => {
-  try {
-    const deleted = await Star.destroy({
-      where: { id: req.params.id },
-    });
-    if (deleted) {
-      res.status(204).json(true);
-    } else {
-      res.status(404).json({ message: "Star not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  await Star.destroy({ where: { id: req.params.id } });
+  if (req.accepts("html")) {
+    res.redirect("/stars");
+  } else {
+    res.status(204).json(true);
   }
 };
 
-module.exports = { index, show, create, update, remove };
+module.exports = { index, show: index, create, update, remove, form };

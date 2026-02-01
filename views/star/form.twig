@@ -1,0 +1,30 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <div class="form-container">
+        <h1>{{ action }} Star</h1>
+        <form method="POST" action="/stars{{ star.id ? '/' ~ star.id : '' }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" value="{{ star.name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Size</label>
+                <input type="number" name="size" value="{{ star.size }}">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4">{{ star.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Galaxy ID (Link to parent)</label>
+                <input type="number" name="galaxyId" value="{{ star.galaxyId }}">
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="image">
+            </div>
+            <button type="submit" class="btn">{{ action }}</button>
+        </form>
+    </div>
+{% endblock %}

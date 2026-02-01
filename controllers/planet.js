@@ -2,69 +2,63 @@ const { Planet } = require("../models");
 
 // GET all
 const index = async (req, res) => {
-  try {
-    const planets = await Planet.findAll();
+  const planets = await Planet.findAll();
+  if (req.accepts("html")) {
+    res.render("planet/index.twig", { planets });
+  } else {
     res.status(200).json(planets);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
 };
 
-// GET by "id"
-const show = async (req, res) => {
-  try {
+// Show Form (HTML only)
+const form = async (req, res) => {
+  if (req.params.id) {
     const planet = await Planet.findByPk(req.params.id);
-    if (planet) {
-      res.status(200).json(planet);
-    } else {
-      res.status(404).json({ message: "Planet not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.render("planet/form.twig", { planet, action: "Update" });
+  } else {
+    res.render("planet/form.twig", { action: "Create" });
   }
 };
 
 // POST
 const create = async (req, res) => {
+  const data = req.body;
+  if (req.file) data.image = req.file.filename;
+
   try {
-    const planet = await Planet.create(req.body);
-    res.status(201).json(planet);
+    const planet = await Planet.create(data);
+    if (req.accepts("html")) {
+      res.redirect("/planets");
+    } else {
+      res.status(201).json(planet);
+    }
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).send(error.message);
   }
 };
 
-// PATCH
+// PATCH/PUT
 const update = async (req, res) => {
-  try {
-    const [updated] = await Planet.update(req.body, {
-      where: { id: req.params.id },
-    });
-    if (updated) {
-      const updatedPlanet = await Planet.findByPk(req.params.id);
-      res.status(200).json(updatedPlanet);
-    } else {
-      res.status(404).json({ message: "Planet not found" });
-    }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  const data = req.body;
+  if (req.file) data.image = req.file.filename;
+
+  await Planet.update(data, { where: { id: req.params.id } });
+
+  if (req.accepts("html")) {
+    res.redirect("/planets");
+  } else {
+    res.status(200).json({ message: "Updated" });
   }
 };
 
 // DELETE
 const remove = async (req, res) => {
-  try {
-    const deleted = await Planet.destroy({
-      where: { id: req.params.id },
-    });
-    if (deleted) {
-      res.status(204).json(true);
-    } else {
-      res.status(404).json({ message: "Planet not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  await Planet.destroy({ where: { id: req.params.id } });
+  if (req.accepts("html")) {
+    res.redirect("/planets");
+  } else {
+    res.status(204).json(true);
   }
 };
 
-module.exports = { index, show, create, update, remove };
+module.exports = { index, show: index, create, update, remove, form };

@@ -1,0 +1,22 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <h1>Stars</h1>
+    <a href="/stars/create" class="btn">Add New Star</a>
+    <div class="grid">
+        {% for star in stars %}
+            <div class="card">
+                {% if star.image %}
+                    <img src="/uploads/{{ star.image }}" alt="{{ star.name }}">
+                {% endif %}
+                <h3>{{ star.name }}</h3>
+                <p><strong>Size:</strong> {{ star.size }}</p>
+                <p>{{ star.description }}</p>
+                <div class="actions">
+                    <a href="/stars/{{ star.id }}/edit">Edit</a>
+                    <a href="/stars/{{ star.id }}/delete" class="delete">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

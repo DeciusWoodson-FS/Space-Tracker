@@ -1,0 +1,26 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <div class="form-container">
+        <h1>{{ action }} Planet</h1>
+        <form method="POST" action="/planets{{ planet.id ? '/' ~ planet.id : '' }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" value="{{ planet.name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Size</label>
+                <input type="number" name="size" value="{{ planet.size }}">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4">{{ planet.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="image">
+            </div>
+            <button type="submit" class="btn">{{ action }}</button>
+        </form>
+    </div>
+{% endblock %}

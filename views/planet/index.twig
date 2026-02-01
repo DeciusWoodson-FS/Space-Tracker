@@ -1,0 +1,22 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <h1>Planets</h1>
+    <a href="/planets/create" class="btn">Add New Planet</a>
+    <div class="grid">
+        {% for planet in planets %}
+            <div class="card">
+                {% if planet.image %}
+                    <img src="/uploads/{{ planet.image }}" alt="{{ planet.name }}">
+                {% endif %}
+                <h3>{{ planet.name }}</h3>
+                <p><strong>Size:</strong> {{ planet.size }}</p>
+                <p>{{ planet.description }}</p>
+                <div class="actions">
+                    <a href="/planets/{{ planet.id }}/edit">Edit</a>
+                    <a href="/planets/{{ planet.id }}/delete" class="delete">Delete</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
