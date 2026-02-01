@@ -11,6 +11,8 @@
 ![Express.js](https://img.shields.io/badge/Express.js-%23404d59.svg?logo=express&logoColor=%2361DAFB)
 ![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?logo=sequelize&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-00000f?logo=mysql&logoColor=white)
+![Twig](https://img.shields.io/badge/Twig-889900?logo=twig&logoColor=white)
+![Multer](https://img.shields.io/badge/Multer-CC3534?logo=npm&logoColor=white)
 
 ---
 
@@ -42,4 +44,11 @@ curl -X POST [(http://localhost:3000/galaxies)]
 -d '{"name": "Milky Way", "size": 100000, "description": "Where we call home"}'
 
 This will create a galaxy by the name of "Milky Way" with a description of "Where we call home" and an Id of 1, granted you haven't already created a galaxy already. 
+
+---
+
+### Update 02.01.2026
+
+The API has been updated to serve an application page using Twig.js and Multer for file uploads like photos. 
+The steps to run the application are largely the same, however now you can open a page in the browser via [(http://localhost:3000)] and interact by inputting planets, stars, and galaxies through forms. 
 
