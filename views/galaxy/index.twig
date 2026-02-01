@@ -1,0 +1,19 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <h1>Galaxies</h1>
+    <a href="/galaxies/create" class="btn">Add New Galaxy</a>
+    <div class="grid">
+        {% for galaxy in galaxies %}
+            <div class="card">
+                {% if galaxy.image %}
+                    <img src="/uploads/{{ galaxy.image }}" alt="{{ galaxy.name }}" width="100">
+                {% endif %}
+                <h3>{{ galaxy.name }}</h3>
+                <p>{{ galaxy.description }}</p>
+                <a href="/galaxies/{{ galaxy.id }}/edit">Edit</a> | 
+                <a href="/galaxies/{{ galaxy.id }}/delete">Delete</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

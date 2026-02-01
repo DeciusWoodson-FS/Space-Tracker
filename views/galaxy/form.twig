@@ -1,0 +1,21 @@
+{% extends '../layout.twig' %}
+
+{% block body %}
+    <h1>{{ action }} Galaxy</h1>
+    {# Use enctype="multipart/form-data" for file uploads #}
+    <form method="POST" action="/galaxies{{ galaxy.id ? '/' ~ galaxy.id : '' }}" enctype="multipart/form-data">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ galaxy.name }}"><br>
+        
+        <label>Size:</label>
+        <input type="number" name="size" value="{{ galaxy.size }}"><br>
+        
+        <label>Description:</label>
+        <textarea name="description">{{ galaxy.description }}</textarea><br>
+        
+        <label>Image:</label>
+        <input type="file" name="image"><br>
+        
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}

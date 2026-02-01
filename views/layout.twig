@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/galaxies">Galaxies</a>  
+        <a href="/stars">Stars</a> 
+        <a href="/planets">Planets</a>
+    </nav>
+    <hr>
+    <div class="container">
+        {% block body %}{% endblock %}
+    </div>
+    <footer id="footer">
+        {% block footer %}
+        &copy; Woodson Decius 2026 Full Sail University
+        {% endblock %}
+    </footer>
+</body>
+</html>

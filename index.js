@@ -1,32 +1,31 @@
-// Load in Express framework
 const express = require("express");
-
-// Load in database models
-const db = require("./models");
-
-// Create a new Express instance
 const app = express();
-
-// Load in RESTful routers
+const db = require("./models");
 const routers = require("./routers/index.js");
+const path = require("path");
 
-// Middleware to parse request bodies
+// View Engine (Twig)
+app.set("view engine", "twig");
+app.set("views", path.join(__dirname, "views"));
+
+// Serve Static Files
+app.use(express.static("public"));
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Home page welcome middleware
+// Home page
 app.get("/", (req, res) => {
-  res.status(200).send("Welcome to Star Tracker Library");
+  res.render("home.twig", { title: "Star Tracker" });
 });
 
-// Register RESTful routers with our "app"
+// Routers
 app.use("/planets", routers.planet);
 app.use("/stars", routers.star);
 app.use("/galaxies", routers.galaxy);
 
-// Synchronize the database and then start the server
-db.sequelize.sync({ force: false }).then(() => {
-  // Set app to listen on port 3000
+db.sequelize.sync({ force: true }).then(() => {
   app.listen(3000, () => {
     console.log("Server is running on port 3000");
   });
