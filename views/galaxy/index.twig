@@ -7,12 +7,15 @@
         {% for galaxy in galaxies %}
             <div class="card">
                 {% if galaxy.image %}
-                    <img src="/uploads/{{ galaxy.image }}" alt="{{ galaxy.name }}" width="100">
+                    <img src="/uploads/{{ galaxy.image }}" alt="{{ galaxy.name }}">
                 {% endif %}
                 <h3>{{ galaxy.name }}</h3>
+                <p><strong>Size:</strong> {{ galaxy.size }} light-years</p>
                 <p>{{ galaxy.description }}</p>
-                <a href="/galaxies/{{ galaxy.id }}/edit">Edit</a> | 
-                <a href="/galaxies/{{ galaxy.id }}/delete">Delete</a>
+                <div class="actions">
+                    <a href="/galaxies/{{ galaxy.id }}/edit">Edit</a>
+                    <a href="/galaxies/{{ galaxy.id }}/delete" class="delete">Delete</a>
+                </div>
             </div>
         {% endfor %}
     </div>
